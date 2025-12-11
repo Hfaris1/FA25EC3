@@ -104,7 +104,7 @@ int main() {
     string apiKey;
     getline(cin, apiKey);
 
-    string filename = runCurlToOpenAI(apiKey);
+    string filename = "story.txt";
 
     vector<StoryNodeRaw> rawNodes = parseStoryFile(filename);
     if (rawNodes.empty()) {
@@ -114,13 +114,18 @@ int main() {
 
     Tree<string> adventureTree;
 
-    // TODO: Students, create the root from rawNodes[0]
-    // adventureTree.createRoot(rawNodes[0].id, rawNodes[0].text);
+    adventureTree.createRoot(rawNodes[0].id, rawNodes[0].text);
 
-    // TODO: Students, add all remaining nodes
-    // for (int i = 1; i < rawNodes.size(); i++) {
-    //     adventureTree.addNode(...);
-    // }
+    for (int i = 1; i < rawNodes.size(); i++) {
+        adventureTree.addNode(rawNodes[0].id, rawNodes[i].id, rawNodes[i].text);
+    }
+
+    for (const auto &node : rawNodes) {
+        for (const string &childID : node.children) {
+            adventureTree.addNode(node.id, childID, "");
+        }
+    }
+
 
     // TODO: Students, implement a method in Tree<T> called playGame()
     // This method should:
